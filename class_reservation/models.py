@@ -19,10 +19,14 @@ class Teacher(models.Model):
     password = models.CharField(max_length=255)
     is_active = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    Category = models.ManyToManyField(Category)
+    Category = models.ManyToManyField('Category')
 
     def __str__(self):
         return self.name
+
+
+class Category(models.Model):
+    category_name = models.CharField(max_length=255)
 
 
 class Class(models.Model):
@@ -44,14 +48,11 @@ class Class(models.Model):
     category = models.CharField(max_length=255)
     available_time = models.CharField(
         max_length=10, choices=AVAILABLE_TIME_CHOICES)
-    location = models.CharField(max_length=10, choices=LOCATION_CHOICES, default=ON_SITE)
+    location = models.CharField(
+        max_length=10, choices=LOCATION_CHOICES, default=ON_SITE)
     price = models.IntegerField()
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.class_name
-
-
-class Category(models.Model):
-    category_name = models.CharField(max_length=255)
